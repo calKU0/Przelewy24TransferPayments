@@ -47,3 +47,7 @@ Settings are defined in `App.config`. Below is a sample configuration:
 ## License
 
 This project is proprietary and confidential. See the [LICENSE](LICENSE) file for more information.
+
+---
+
+© 2025 [calKU0](https://github.com/calKU0)
