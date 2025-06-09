@@ -1,6 +1,8 @@
 
 # Przelewy24TransferPayments
 
+> 💼 **Commercial Project** — part of a private or client-facing initiative.
+
 **Przelewy24TransferPayments** is a Windows Service application built using .NET Framework 4.7.2. It automates the process of retrieving payments from Przelewy24 and transferring them to respective merchants.
 
 ## Features
