@@ -19,6 +19,34 @@ namespace Przelewy24TransferPayments.Services
         private readonly HttpClient _client = HttpClientService.Client;
         public Przelewy24Service() { }
 
+        public async Task<MerchantExistsResponse> GetMerchant(MerchantExistsRequest merchant)
+        {
+            var result = new MerchantExistsResponse();
+            string endpoint = $"merchant/exists/{merchant.IdentificationType}/{merchant.IdentificationNumber}";
+            var segments = endpoint.Split('/');
+            string firstTwoSegments = string.Join("_", segments.Take(2));
+
+            try
+            {
+                var response = await _client.GetAsync(endpoint);
+                string content = await response.Content.ReadAsStringAsync();
+
+                ResponseLogger.SaveResponseToFile(content, firstTwoSegments);
+
+                response.EnsureSuccessStatusCode();
+                result = JsonSerializer.Deserialize<MerchantExistsResponse>(content, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                });
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Wystąpił błąd przy próbie pobrania danych merchanta");
+            }
+
+            return result;
+        }
+
         public async Task<DispatchTransactionResult> DispatchTransaction(List<DispachTransactionRequestDetails> details)
         {
             var result = new DispatchTransactionResult
@@ -30,9 +58,10 @@ namespace Przelewy24TransferPayments.Services
 
             try
             {
+                int batchId = (int)(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() % int.MaxValue);
                 var request = new DispachTransactionRequest
                 {
-                    BatchId = DateTime.Now.Second,
+                    BatchId = batchId,
                     Details = details
                 };
 
@@ -81,36 +110,6 @@ namespace Przelewy24TransferPayments.Services
 
             return result;
         }
-
-
-        public async Task<MerchantExistsResponse> GetMerchant(MerchantExistsRequest merchant)
-        {
-            var result = new MerchantExistsResponse();
-            string endpoint = $"merchant/exists/{merchant.IdentificationType}/{merchant.IdentificationNumber}";
-            var segments = endpoint.Split('/');
-            string firstTwoSegments = string.Join("_", segments.Take(2));
-
-            try
-            {
-                var response = await _client.GetAsync(endpoint);
-                string content = await response.Content.ReadAsStringAsync();
-
-                ResponseLogger.SaveResponseToFile(content, firstTwoSegments);
-
-                response.EnsureSuccessStatusCode();
-                result = JsonSerializer.Deserialize<MerchantExistsResponse>(content, new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true,
-                });
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Wystąpił błąd przy próbie pobrania danych merchanta");
-            }
-
-            return result;
-        }
-
 
         public async Task<List<TransactionDetails>> GetTransacions(string dateFrom, string dateTo, string type = "")
         {

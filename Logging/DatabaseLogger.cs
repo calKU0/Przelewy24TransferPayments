@@ -11,7 +11,7 @@ namespace Przelewy24TransferPayments.Logging
 {
     public static class DatabaseLogger
     {
-        public static async Task LogTransaction(long orderId, string sessionId, long amount, string error = null)
+        public static async Task LogTransaction(long orderId, string sessionId, int merchantId, long amount, string error = null)
         {
             string connectionString = ConfigurationManager.ConnectionStrings["GaskaConnectionString"].ToString();
             using (var connection = new SqlConnection(connectionString))
@@ -27,7 +27,7 @@ namespace Przelewy24TransferPayments.Logging
                     command.Parameters.AddWithValue("@SessionId", sessionId);
                     command.Parameters.AddWithValue("@Amount", amount);
                     command.Parameters.AddWithValue("@Currency", "PLN");
-                    command.Parameters.AddWithValue("@MerchantId", 1);
+                    command.Parameters.AddWithValue("@MerchantId", merchantId);
                     command.Parameters.AddWithValue("@Success", string.IsNullOrEmpty(error) ? 1 : 0);
                     command.Parameters.AddWithValue("@ErrorMessage", string.IsNullOrEmpty(error) ? (object)DBNull.Value : error);
 

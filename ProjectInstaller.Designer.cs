@@ -40,7 +40,7 @@
             // 
             this.serviceInstaller1.DelayedAutoStart = true;
             this.serviceInstaller1.Description = "Serwis do przeksięgowywania płatności na konta merchantów";
-            this.serviceInstaller1.DisplayName = "Przelewy24TransferPayments";
+            this.serviceInstaller1.DisplayName = "GaskaPrzelewy24TransferPayments";
             this.serviceInstaller1.ServiceName = "Przelewy24TransferPayments";
             this.serviceInstaller1.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
             // 
