@@ -59,8 +59,14 @@ namespace Przelewy24TransferPayments
                 string nip;
                 var today = DateTime.Today.ToString("yyyyMMdd");
                 var transactions = await _przelewy24Service.GetTransacions(today, today, "transaction");
-
                 int count = transactions?.Count ?? 0;
+
+                if (count == 0)
+                {
+                    Log.Information("Nie znalezniono żadnych transakacji z dnia {Date}.", DateTime.Today.ToString("dd.MM.yyyy"));
+                    return;
+                }
+
                 Log.Information("Pobrano {Count} {Label} z dnia {Date}.", count, GetTransactionLabel(count), DateTime.Today.ToString("dd.MM.yyyy"));
 
                 var dispatchTransactionRequest = new List<DispachTransactionRequestDetails>();
