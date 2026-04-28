@@ -1,7 +1,7 @@
 
 # Przelewy24TransferPayments
 
-**Przelewy24TransferPayments** is a Windows Service application built using .NET Framework 4.7.2. It automates the process of retrieving payments from Przelewy24 and transferring them to respective merchants.
+**Przelewy24TransferPayments** is a Worker Service application built using .NET 10. It automates the process of retrieving payments from Przelewy24 and transferring them to respective merchants.
 
 ## Features
 
@@ -15,28 +15,10 @@
 
 ## Technologies Used
 
-- **.NET Framework 4.7.2**
-- **Windows Services**
+- **.NET 10**
+- **Worker Service**
 - **Przelewy24 API**
 - **SQL Server** (via ADO.NET or EF)
-
-## Configuration
-
-Settings are defined in `App.config`. Below is a sample configuration:
-
-```xml
-<appSettings>
-  <!-- Przelewy24 API -->
-  <add key="ApiUser" value="user" />
-  <add key="ApiCRCKey" value="crckey " />
-  <add key="ApiSecret" value="secret" />
-  <add key="ApiBaseUrl" value="https://secure.przelewy24.pl/api/v1/" />
-</appSettings>
-
-<connectionStrings>
-  <add name="ConnectionString" connectionString="Server='server';Database='database';User Id='user';Password='password';Connection Timeout=5;TrustServerCertificate=True"/>
-</connectionStrings>
-```
 
 ## Usage
 
